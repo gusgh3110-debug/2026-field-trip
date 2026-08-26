@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<title>2026 행복다드림 수학여행</title>
+<meta name="theme-color" content="#2B6CB8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="행복다드림">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+  :root{
+    --blue:#2B6CB8;
+    --blue-dark:#1E4D80;
+    --blue-pale:#EAF2FC;
+    --yellow:#FFB100;
+    --yellow-pale:#FFF4DC;
+    --coral:#E8543C;
+    --coral-pale:#FDE9E5;
+    --green:#3FA873;
+    --green-pale:#E6F6EE;
+    --bg:#F5F8FC;
+    --card:#FFFFFF;
+    --text:#1F2937;
+    --text-soft:#697386;
+    --text-faint:#9AA5B4;
+    --border:#E4EAF2;
+    --radius:18px;
+    --nav-h:64px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;overflow-x:hidden;width:100%;}
+  body{
+    font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Malgun Gothic',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 10px);
+  }
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;}
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    background:linear-gradient(135deg,var(--blue) 0%, var(--blue-dark) 100%);
+    color:#fff;
+    padding:calc(env(safe-area-inset-top) + 16px) 20px 22px;
+    border-radius:0 0 26px 26px;
+    position:relative;
+    overflow:hidden;
+  }
+  .topbar::after{
+    content:"";
+    position:absolute; right:-30px; top:-30px;
+    width:140px;height:140px;border-radius:50%;
+    background:rgba(255,255,255,0.08);
+  }
+  .topbar .eyebrow{font-size:13px;opacity:0.85;font-weight:600;letter-spacing:0.02em;}
+  .topbar h1{font-size:21px;margin:4px 0 14px;font-weight:800;letter-spacing:-0.01em;}
+  .day-chip{
+    display:inline-flex;align-items:center;gap:8px;
+    background:rgba(255,255,255,0.16);
+    border:1px solid rgba(255,255,255,0.25);
+    padding:8px 14px;border-radius:999px;font-size:14px;font-weight:700;
+  }
+  .day-chip .dot{width:8px;height:8px;border-radius:50%;background:var(--yellow);}
+
+  /* ---------- Layout ---------- */
+  .view{padding:16px 16px 8px;max-width:520px;margin:0 auto;animation:fadein .18s ease;}
+  @keyframes fadein{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+  .section-title{font-size:15px;font-weight:800;margin:22px 2px 10px;display:flex;align-items:center;gap:6px;}
+  .section-title:first-child{margin-top:4px;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:12px;
+  }
+
+  /* ---------- Home: priority stack ---------- */
+  .notice-banner{
+    background:var(--coral-pale);
+    border:1px solid #F5C6BC;
+    border-radius:var(--radius);
+    padding:14px 16px;
+    margin-top:-30px;
+    position:relative;
+    z-index:2;
+  }
+  .notice-banner .tag{
+    display:inline-block;background:var(--coral);color:#fff;font-size:11px;font-weight:800;
+    padding:3px 8px;border-radius:999px;margin-bottom:6px;
+  }
+  .notice-banner .msg{font-size:14.5px;font-weight:700;color:#8A2E1D;}
+
+  .quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+  .quick-card{
+    background:var(--card);border:1px solid var(--border);border-radius:16px;
+    padding:14px;display:flex;flex-direction:column;gap:4px;min-height:78px;justify-content:center;
+  }
+  .quick-card .label{font-size:12px;color:var(--text-soft);font-weight:600;}
+  .quick-card .value{font-size:15px;font-weight:800;}
+
+  .next-card{
+    background:var(--blue-pale);border:1px solid #C9DFF7;border-radius:var(--radius);
+    padding:16px;display:flex;align-items:center;gap:14px;
+  }
+  .next-card .time{
+    background:var(--blue);color:#fff;font-weight:800;font-size:15px;
+    padding:10px 12px;border-radius:12px;min-width:64px;text-align:center;
+  }
+  .next-card .info .t{font-weight:800;font-size:15.5px;}
+  .next-card .info .p{font-size:13px;color:var(--text-soft);margin-top:2px;}
+
+  .mission-cta{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    background:linear-gradient(135deg,var(--yellow) 0%, #FFC94D 100%);
+    border-radius:var(--radius);padding:16px;color:#5A3A00;
+  }
+  .mission-cta .t{font-weight:800;font-size:15px;}
+  .mission-cta .s{font-size:12.5px;opacity:0.85;margin-top:2px;}
+  .btn-go{
+    background:#5A3A00;color:#fff;font-weight:800;font-size:13px;
+    padding:10px 16px;border-radius:12px;border:none;white-space:nowrap;
+  }
+
+  .btn-primary{
+    display:block;width:100%;text-align:center;background:var(--blue);color:#fff;
+    font-weight:800;font-size:15.5px;padding:15px;border-radius:14px;border:none;
+    min-height:48px;
+  }
+  .btn-primary:active{background:var(--blue-dark);}
+  .btn-outline{
+    display:block;width:100%;text-align:center;background:#fff;color:var(--blue);
+    font-weight:700;font-size:14.5px;padding:13px;border-radius:14px;border:1.5px solid var(--blue);
+    min-height:44px;margin-top:8px;
+  }
+
+  /* ---------- Timeline (signature element) ---------- */
+  .timeline{position:relative;padding-left:28px;margin-top:6px;}
+  .timeline::before{
+    content:"";position:absolute;left:9px;top:6px;bottom:6px;width:3px;
+    background:linear-gradient(var(--border),var(--border));border-radius:3px;
+  }
+  .t-item{position:relative;padding:0 0 22px 14px;}
+  .t-item:last-child{padding-bottom:2px;}
+  .t-item::before{
+    content:"";position:absolute;left:-23px;top:3px;width:14px;height:14px;border-radius:50%;
+    background:#fff;border:3px solid var(--text-faint);
+  }
+  .t-item.done::before{border-color:var(--green);background:var(--green);}
+  .t-item.now::before{border-color:var(--yellow);background:var(--yellow);box-shadow:0 0 0 5px var(--yellow-pale);}
+  .t-item .row{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+  .t-item .time{font-size:12.5px;font-weight:800;color:var(--text-soft);}
+  .t-item.now .time{color:#8A6300;}
+  .t-item .title{font-size:15px;font-weight:800;margin-top:2px;}
+  .t-item .meta{font-size:12.5px;color:var(--text-soft);margin-top:3px;}
+  .t-item .note{font-size:12.5px;color:var(--text-faint);margin-top:4px;}
+  .badge{font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:999px;white-space:nowrap;}
+  .badge.now{background:var(--yellow-pale);color:#8A6300;}
+  .badge.done{background:var(--green-pale);color:#1E7A4C;}
+  .badge.next{background:var(--blue-pale);color:var(--blue-dark);}
+
+  /* ---------- Tabs ---------- */
+  .tabs{display:flex;gap:8px;margin-bottom:14px;}
+  .tab{
+    flex:1;text-align:center;padding:11px 0;border-radius:12px;font-weight:800;font-size:14px;
+    background:#fff;border:1px solid var(--border);color:var(--text-soft);
+  }
+  .tab.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+
+  /* ---------- Notices ---------- */
+  .notice-item{border-bottom:1px solid var(--border);padding:14px 2px;}
+  .notice-item:last-child{border-bottom:none;}
+  .notice-item .top{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+  .notice-item .title{font-weight:800;font-size:14.5px;}
+  .notice-item .body{font-size:13.5px;color:var(--text-soft);}
+  .notice-item .time{font-size:11.5px;color:var(--text-faint);margin-top:6px;}
+  .imp-tag{background:var(--coral);color:#fff;font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:999px;}
+
+  /* ---------- Mission pages ---------- */
+  .mission-hero{
+    border-radius:22px;padding:26px 20px;color:#fff;text-align:center;margin-bottom:16px;
+    background:linear-gradient(135deg,var(--blue) 0%, var(--blue-dark) 100%);
+  }
+  .mission-hero .emoji{font-size:38px;}
+  .mission-hero h2{font-size:19px;margin:8px 0 4px;font-weight:800;}
+  .mission-hero p{font-size:13.5px;opacity:0.9;margin:0;}
+  .rule-list{list-style:none;margin:0;padding:0;}
+  .rule-list li{
+    display:flex;gap:10px;align-items:flex-start;padding:9px 0;font-size:14px;
+    border-bottom:1px dashed var(--border);
+  }
+  .rule-list li:last-child{border-bottom:none;}
+  .big-btn{
+    display:block;width:100%;text-align:center;background:var(--yellow);color:#5A3A00;
+    font-weight:800;font-size:16px;padding:18px;border-radius:16px;border:none;margin-top:16px;
+  }
+  .big-btn:active{filter:brightness(0.95);}
+  .pending-note{
+    text-align:center;color:var(--text-soft);font-size:13.5px;background:var(--bg);
+    border:1px dashed var(--border);border-radius:14px;padding:16px;margin-top:16px;
+  }
+  .mission-picker{display:flex;flex-direction:column;gap:12px;}
+  .mission-picker a.mp-card{
+    display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--border);
+    border-radius:16px;padding:16px;
+  }
+  .mp-card .icon{font-size:28px;}
+  .mp-card .t{font-weight:800;font-size:15.5px;}
+  .mp-card .s{font-size:12.5px;color:var(--text-soft);}
+
+  /* ---------- Lotte world ---------- */
+  .meet-hero{
+    background:var(--yellow-pale);border:1px solid #FCE0A6;border-radius:var(--radius);
+    padding:18px;text-align:center;margin-bottom:16px;
+  }
+  .meet-hero .label{font-size:12.5px;color:#8A6300;font-weight:700;}
+  .meet-hero .time{font-size:30px;font-weight:900;color:#5A3A00;margin:4px 0;}
+  .meet-hero .place{font-size:14px;font-weight:700;color:#5A3A00;}
+
+  /* ---------- Photos ---------- */
+  .photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .photo-tile{
+    aspect-ratio:1/1;border-radius:14px;position:relative;overflow:hidden;
+    display:flex;align-items:flex-end;padding:10px;color:#fff;font-size:12.5px;font-weight:700;
+  }
+  .photo-tile .cap{background:rgba(0,0,0,0.35);padding:4px 8px;border-radius:8px;}
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:100;
+    display:flex;align-items:center;justify-content:center;padding:24px;
+  }
+  .modal-box{background:#fff;border-radius:18px;padding:20px;max-width:400px;width:100%;text-align:center;}
+  .modal-box.photo-view{padding:12px;}
+  .modal-box .ph-big{width:100%;aspect-ratio:4/3;border-radius:12px;margin-bottom:10px;}
+  .modal-box h3{margin:6px 0;font-size:16px;}
+  .modal-box p{font-size:13.5px;color:var(--text-soft);}
+  .modal-actions{display:flex;gap:8px;margin-top:16px;}
+  .modal-actions button{flex:1;padding:12px;border-radius:12px;border:none;font-weight:800;font-size:14px;}
+  .m-cancel{background:var(--bg);color:var(--text-soft);}
+  .m-confirm{background:var(--coral);color:#fff;}
+  .m-close{background:var(--bg);color:var(--text-soft);width:100%;margin-top:10px;padding:12px;border-radius:12px;border:none;font-weight:700;}
+
+  /* ---------- Safety ---------- */
+  .contact-row{
+    display:flex;align-items:center;justify-content:space-between;padding:14px 4px;
+    border-bottom:1px solid var(--border);
+  }
+  .contact-row:last-child{border-bottom:none;}
+  .contact-row .label{font-weight:700;font-size:14.5px;}
+  .contact-row .num{font-size:12.5px;color:var(--text-soft);margin-top:2px;}
+  .call-btn{
+    background:var(--green-pale);color:#1E7A4C;font-weight:800;font-size:13px;
+    padding:9px 14px;border-radius:12px;border:none;min-height:38px;
+  }
+  .emergency-btn{
+    display:block;width:100%;background:var(--coral);color:#fff;font-weight:800;font-size:16px;
+    padding:18px;border-radius:16px;border:none;text-align:center;margin-bottom:16px;
+  }
+
+  /* ---------- Meeting points ---------- */
+  .meet-item{
+    background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:10px;
+  }
+  .meet-item .top{display:flex;justify-content:space-between;align-items:center;}
+  .meet-item .name{font-weight:800;font-size:15px;}
+  .meet-item .time{font-size:12.5px;font-weight:800;color:var(--blue);}
+  .meet-item .note{font-size:13px;color:var(--text-soft);margin-top:4px;}
+  .map-btn{
+    display:inline-block;margin-top:10px;font-size:12.5px;font-weight:700;color:var(--blue);
+    background:var(--blue-pale);padding:8px 12px;border-radius:10px;
+  }
+
+  /* ---------- Bottom nav ---------- */
+  .bottom-nav{
+    position:fixed;left:0;right:0;bottom:0;height:calc(var(--nav-h) + env(safe-area-inset-bottom));
+    background:#fff;border-top:1px solid var(--border);
+    display:flex;padding-bottom:env(safe-area-inset-bottom);
+    z-index:50;
+  }
+  .nav-btn{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    background:none;border:none;color:var(--text-faint);font-size:10.5px;font-weight:700;min-height:44px;
+  }
+  .nav-btn .ic{font-size:20px;}
+  .nav-btn.active{color:var(--blue);}
+
+  .empty-state{text-align:center;color:var(--text-faint);font-size:13.5px;padding:30px 10px;}
+  .offline-hint{
+    background:var(--bg);border:1px dashed var(--border);border-radius:12px;padding:10px 12px;
+    font-size:12px;color:var(--text-faint);text-align:center;margin-top:10px;
+  }
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<nav class="bottom-nav">
+  <button class="nav-btn" data-nav="home"><span class="ic">🏠</span>홈</button>
+  <button class="nav-btn" data-nav="schedule"><span class="ic">📅</span>일정</button>
+  <button class="nav-btn" data-nav="mission"><span class="ic">🏆</span>미션</button>
+  <button class="nav-btn" data-nav="notices"><span class="ic">📢</span>공지</button>
+  <button class="nav-btn" data-nav="safety"><span class="ic">🚨</span>안전</button>
+</nav>
+
+<script>
+/* =========================================================================
+   내장 기본값 (Built-in fallback)
+   -------------------------------------------------------------------------
+   이 블록은 data.js / common.js 파일을 찾지 못했을 때를 대비한 예비용입니다
+   (예: 이 파일 하나만 열어보거나 미리보기로 볼 때). data.js, common.js를
+   같은 폴더에 함께 두면 아래 외부 파일들이 이 값을 그대로 덮어써서
+   실제로는 data.js 내용이 사용됩니다. 즉, 실제 운영 시 수정은
+   data.js 파일에서 하면 됩니다 — 이 블록은 손대지 않아도 됩니다.
+   ========================================================================= */
+/* =========================================================================
+   data.js — 「2026 행복다드림 수학여행」 기본 데이터
+   -------------------------------------------------------------------------
+   이 파일이 학생용 화면(index.html)에 나오는 모든 내용의 "원본"입니다.
+   교사용 관리자 화면(admin.html)에서 내용을 수정한 뒤 "내보내기" 버튼을
+   누르면 이 파일과 같은 형식의 새 data.js가 다운로드됩니다.
+   그 파일로 이 자리의 data.js를 교체하고 다시 업로드(배포)하면
+   모든 학생 화면에 반영됩니다.
+
+   ⚠️ 관리자 화면에서 "미리보기 저장"만 누른 경우에는 그 브라우저에만
+      임시로 반영됩니다. 실제 학생들에게 반영하려면 반드시
+      "data.js 내보내기"로 파일을 받아 서버에 다시 올려주세요.
+   ========================================================================= */
+
+window.TRIP_DATA_DEFAULT = {
+
+  schoolName: "[학교명]",
+
+  // 일정표 하단 안내 문구
+  scheduleNote: "※ 일정 및 예정 시간은 동선이나 상황에 따라 변동될 수 있음.",
+
+  tripDays: [
+    { id: 1, label: "1일차", date: "2026-09-09", title: "서울 이동 · 국립중앙박물관 · 연극 관람" },
+    { id: 2, label: "2일차", date: "2026-09-10", title: "롯데월드 · 롯데타워 전망대" },
+    { id: 3, label: "3일차", date: "2026-09-11", title: "경복궁 견학 · 귀가" }
+  ],
+
+  // 각 일정: time(시작) / endTime(종료) / title / place / transport / note
+  schedules: {
+    1: [
+      { time: "08:00", endTime: "08:30", title: "학교 집결, 출발", place: "학교", transport: "-", note: "출석 확인 후 출발합니다." },
+      { time: "08:30", endTime: "13:00", title: "이동", place: "서울", transport: "장성 → 서울, 휴게소 2회", note: "" },
+      { time: "13:00", endTime: "14:00", title: "점심식사", place: "두래돈가스", transport: "-", note: "" },
+      { time: "14:00", endTime: "16:00", title: "국립중앙박물관 견학", place: "국립중앙박물관", transport: "-", note: "HedgeHunt 미션을 조원과 함께 수행하세요." },
+      { time: "16:00", endTime: "16:40", title: "이동", place: "대학로", transport: "국립중앙박물관 → 대학로", note: "" },
+      { time: "16:40", endTime: "18:30", title: "연극 관람", place: "JS아트홀", transport: "-", note: "" },
+      { time: "18:30", endTime: "19:30", title: "저녁 식사", place: "조선식당(제육쌈밥)", transport: "-", note: "" },
+      { time: "19:30", endTime: "20:40", title: "이동", place: "숙소", transport: "대학로 → 숙소", note: "" },
+      { time: "20:40", endTime: "21:00", title: "체크인 및 짐정리", place: "로사나부티크 호텔", transport: "-", note: "" },
+      { time: "21:00", endTime: "22:00", title: "세면 및 취침 준비", place: "로사나부티크 호텔", transport: "-", note: "" },
+      { time: "22:00", endTime: "23:59", title: "점호 및 취침", place: "로사나부티크 호텔", transport: "-", note: "" }
+    ],
+    2: [
+      { time: "07:00", endTime: "08:20", title: "기상 및 아침식사", place: "호텔 조식", transport: "-", note: "" },
+      { time: "08:20", endTime: "08:40", title: "이동", place: "롯데월드", transport: "숙소 → 롯데월드", note: "" },
+      { time: "08:40", endTime: "12:00", title: "롯데월드 어드벤처", place: "롯데월드", transport: "-", note: "" },
+      { time: "12:00", endTime: "13:00", title: "점심 식사", place: "롯데리아", transport: "-", note: "" },
+      { time: "13:00", endTime: "17:00", title: "롯데월드 어드벤처", place: "롯데월드", transport: "-", note: "" },
+      { time: "17:00", endTime: "17:15", title: "이동", place: "식당", transport: "롯데월드 → 식당", note: "" },
+      { time: "17:15", endTime: "18:15", title: "저녁 식사", place: "마노다세프(양식)", transport: "-", note: "" },
+      { time: "18:15", endTime: "18:30", title: "이동", place: "롯데타워", transport: "식당 → 롯데타워", note: "" },
+      { time: "18:30", endTime: "19:30", title: "롯데타워 전망대 관람", place: "서울스카이", transport: "-", note: "" },
+      { time: "19:30", endTime: "20:00", title: "이동", place: "숙소", transport: "롯데타워 → 숙소", note: "" },
+      { time: "20:00", endTime: "22:00", title: "세면 및 취침 준비", place: "로사나부티크 호텔", transport: "-", note: "" },
+      { time: "22:00", endTime: "23:59", title: "취침", place: "로사나부티크 호텔", transport: "-", note: "야간 학생 안전지도" }
+    ],
+    3: [
+      { time: "07:00", endTime: "08:00", title: "기상 및 아침식사", place: "호텔 조식", transport: "-", note: "" },
+      { time: "08:00", endTime: "09:00", title: "이동", place: "경복궁", transport: "숙소 → 경복궁", note: "" },
+      { time: "09:00", endTime: "11:00", title: "경복궁 견학", place: "경복궁", transport: "-", note: "HedgeHunt 미션을 조원과 함께 수행하세요." },
+      { time: "11:00", endTime: "11:20", title: "이동", place: "식당", transport: "경복궁 → 식당", note: "" },
+      { time: "11:20", endTime: "12:20", title: "점심식사", place: "테이크 종각점(뷔페)", transport: "-", note: "" },
+      { time: "12:20", endTime: "17:00", title: "이동", place: "학교", transport: "경복궁 → 학교, 휴게소 1회", note: "" },
+      { time: "17:00", endTime: "17:30", title: "귀가", place: "학교", transport: "-", note: "보호자님께 인계 후 귀가합니다." }
+    ]
+  },
+
+  notices: [
+    { id: 1, title: "[중요] 08:20까지 호텔 로비로 모이세요.", body: "2일차 아침, 짐을 모두 챙겨 08:20까지 숙소 로비로 집결해주세요.", time: "2026-09-09 20:10", important: true },
+    { id: 2, title: "[중요] 출발 20분 전까지 학교로 오세요.", body: "1일차 버스는 08:00 출발입니다. 늦지 않도록 학교에 미리 도착해주세요.", time: "2026-09-08 09:15", important: true },
+    { id: 3, title: "우천 시 일정 안내", body: "비가 올 경우 실외 일정 일부가 실내 프로그램으로 변경될 수 있습니다. 우산을 챙겨주세요.", time: "2026-09-07 18:00", important: false }
+  ],
+
+  meetingPoints: {
+    1: [
+      { name: "학교", time: "08:00", note: "출석 확인 후 출발합니다.", mapUrl: "" },
+      { name: "국립중앙박물관", time: "14:00", note: "정문 앞 집결", mapUrl: "" },
+      { name: "JS아트홀 (대학로)", time: "16:40", note: "공연 관람 전 집결", mapUrl: "" },
+      { name: "로사나부티크 호텔", time: "20:40", note: "체크인 및 짐 정리", mapUrl: "" }
+    ],
+    2: [
+      { name: "로사나부티크 호텔 로비", time: "08:20", note: "조식 후 집결", mapUrl: "" },
+      { name: "롯데월드 정문", time: "08:40", note: "입장 전 집결", mapUrl: "" },
+      { name: "서울스카이 (롯데타워)", time: "18:30", note: "전망대 관람 전 집결", mapUrl: "" },
+      { name: "로사나부티크 호텔", time: "20:00", note: "세면 및 취침 준비", mapUrl: "" }
+    ],
+    3: [
+      { name: "로사나부티크 호텔 로비", time: "08:00", note: "짐을 모두 챙겨 내려오세요.", mapUrl: "" },
+      { name: "경복궁", time: "09:00", note: "정문 앞 집결", mapUrl: "" },
+      { name: "학교", time: "17:00", note: "보호자님께 인계 후 해산합니다.", mapUrl: "" }
+    ]
+  },
+
+  emergencyContacts: [
+    { label: "인솔교사 (담임 선생님)", phone: "010-0000-0000" },
+    { label: "학교 행정실", phone: "061-000-0000" },
+    { label: "숙소 프런트 (로사나부티크 호텔)", phone: "02-000-0000" }
+  ],
+
+  safetyRules: [
+    "조원과 항상 함께 다니기",
+    "선생님이 보이는 곳에서만 이동하기",
+    "위험한 장난이나 뛰어다니기 금지",
+    "낯선 사람을 따라가지 않기",
+    "다치거나 아프면 바로 선생님께 알리기",
+    "물건을 잃어버리면 당황하지 말고 선생님께 알리기"
+  ],
+
+  // HedgeHunt 미션 링크 — 준비되면 이 값만 채워주세요. 비어 있으면 "준비 중"으로 표시됩니다.
+  missionLinks: {
+    museum: "",        // 국립중앙박물관 HedgeHunt URL
+    gyeongbokgung: ""  // 경복궁 HedgeHunt URL
+  },
+
+  lotteWorld: {
+    entryTime: "08:40",
+    freeTimeEnd: "17:00",
+    meetingTime: "17:00",
+    meetingPlace: "롯데월드 정문",
+    safetyRules: [
+      "키 제한이 있는 놀이기구는 안내를 꼭 확인하세요.",
+      "탑승 중에는 안전벨트·안전바를 반드시 착용해요.",
+      "혼자 다니지 말고 조원과 함께 이동해요.",
+      "몸이 안 좋으면 놀이기구를 타지 말고 선생님께 알려주세요."
+    ],
+    lostAndFound: "물건을 잃어버리면 정문 안내데스크 또는 인솔교사에게 바로 알려주세요."
+  },
+
+  // 사진 갤러리 (교사가 등록) — url을 채우면 실제 사진이 표시됩니다.
+  photos: {
+    1: [
+      { place: "국립중앙박물관", url: "" },
+      { place: "연극 관람", url: "" }
+    ],
+    2: [
+      { place: "롯데월드", url: "" },
+      { place: "롯데타워 서울스카이", url: "" }
+    ],
+    3: [
+      { place: "경복궁", url: "" }
+    ]
+  }
+};
+
+/* =========================================================================
+   common.js — 학생용/관리자용 화면이 함께 쓰는 데이터 로딩·저장 로직
+   ========================================================================= */
+
+var TRIP_OVERRIDE_KEY = "happyDaedream_dataOverride_v1";
+var TRIP_ADMIN_UNLOCKED_KEY = "happyDaedream_adminUnlocked";
+
+// 관리자 코드 — 학교 상황에 맞게 바꿔서 사용하세요 (간단한 화면 잠금용이며,
+// 강력한 보안 장치는 아닙니다. 민감한 개인정보는 이 화면에 넣지 마세요.)
+var TRIP_ADMIN_CODE = "0909";
+
+/**
+ * 현재 사용할 데이터를 반환합니다.
+ * 관리자가 "이 브라우저에 미리보기 저장"을 한 적이 있으면 그 값을,
+ * 없으면 data.js의 기본값(TRIP_DATA_DEFAULT)을 사용합니다.
+ */
+/**
+ * localStorage를 사용할 수 없는 환경(샌드박스 미리보기, 시크릿 모드 등)에서도
+ * 화면이 멈추지 않도록 감싼 안전한 저장소 함수들.
+ * 실패하면 메모리에만 저장되어(새로고침하면 사라짐) 최소한 화면은 정상 작동합니다.
+ */
+var _tripMemoryStore = {};
+function _safeStorageGet(key) {
+  try { return window.localStorage.getItem(key); }
+  catch (e) { return Object.prototype.hasOwnProperty.call(_tripMemoryStore, key) ? _tripMemoryStore[key] : null; }
+}
+function _safeStorageSet(key, value) {
+  try { window.localStorage.setItem(key, value); }
+  catch (e) { _tripMemoryStore[key] = value; }
+}
+function _safeStorageRemove(key) {
+  try { window.localStorage.removeItem(key); }
+  catch (e) { delete _tripMemoryStore[key]; }
+}
+function _safeSessionGet(key) {
+  try { return window.sessionStorage.getItem(key); }
+  catch (e) { const k = "s:" + key; return Object.prototype.hasOwnProperty.call(_tripMemoryStore, k) ? _tripMemoryStore[k] : null; }
+}
+function _safeSessionSet(key, value) {
+  try { window.sessionStorage.setItem(key, value); }
+  catch (e) { _tripMemoryStore["s:" + key] = value; }
+}
+function _safeSessionRemove(key) {
+  try { window.sessionStorage.removeItem(key); }
+  catch (e) { delete _tripMemoryStore["s:" + key]; }
+}
+
+function loadTripData() {
+  try {
+    const raw = _safeStorageGet(TRIP_OVERRIDE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed && parsed.tripDays) return parsed;
+    }
+  } catch (e) { /* ignore malformed override */ }
+  // 깊은 복사로 반환해 원본 기본값이 실수로 변형되지 않도록 함
+  return JSON.parse(JSON.stringify(window.TRIP_DATA_DEFAULT));
+}
+
+/** 이 브라우저에만 임시로 반영되는 미리보기 저장 */
+function saveTripOverride(data) {
+  _safeStorageSet(TRIP_OVERRIDE_KEY, JSON.stringify(data));
+}
+
+/** 미리보기 초기화 → data.js 기본값으로 되돌림 */
+function clearTripOverride() {
+  _safeStorageRemove(TRIP_OVERRIDE_KEY);
+}
+
+function hasTripOverride() {
+  try { return !!_safeStorageGet(TRIP_OVERRIDE_KEY); } catch (e) { return false; }
+}
+
+/**
+ * 관리자가 편집한 데이터를 data.js 파일 형식의 텍스트로 변환합니다.
+ * 이 내용을 다운로드해서 서버의 data.js를 교체하면 모든 학생에게 반영됩니다.
+ */
+function exportTripDataAsFile(data) {
+  const json = JSON.stringify(data, null, 2);
+  const content =
+`/* =========================================================================
+   data.js — 「2026 행복다드림 수학여행」 데이터
+   관리자 화면에서 내보낸 파일입니다. (${new Date().toLocaleString("ko-KR")})
+   이 파일로 기존 data.js를 교체한 뒤 다시 업로드(배포)하면
+   모든 학생 화면에 반영됩니다.
+   ========================================================================= */
+
+window.TRIP_DATA_DEFAULT = ${json};
+`;
+  const blob = new Blob([content], { type: "text/javascript;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "data.js";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+</script>
+<script src="data.js"></script>
+<script src="common.js"></script>
+<script>
+/* =========================================================================
+   DATA — data.js(기본값) 또는 관리자가 이 브라우저에 저장한 미리보기 값을
+   불러옵니다. 실제 내용을 고치려면 admin.html(교사용 관리자 화면)에서
+   수정한 뒤 내보내기 하거나, data.js 파일을 직접 편집하세요.
+   ========================================================================= */
+
+const DATA = loadTripData();
+const SCHOOL_NAME = DATA.schoolName;
+const SCHEDULE_NOTE = DATA.scheduleNote || "";
+const tripDays = DATA.tripDays;
+const schedules = DATA.schedules;
+const notices = DATA.notices;
+const meetingPoints = DATA.meetingPoints;
+const emergencyContacts = DATA.emergencyContacts;
+const safetyRules = DATA.safetyRules;
+const missionLinks = DATA.missionLinks;
+const lotteWorld = DATA.lotteWorld;
+const photos = DATA.photos;
+
+/* =========================================================================
+   STATE / ROUTER
+   ========================================================================= */
+const state = { scheduleTab: null, missionSub: null };
+
+function todayDay() {
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const match = tripDays.find(d => d.date === todayStr);
+  return match ? match.id : tripDays[0].id;
+}
+function isRealTripDay() {
+  const todayStr = new Date().toISOString().slice(0, 10);
+  return tripDays.some(d => d.date === todayStr);
+}
+function nowHM() {
+  const n = new Date();
+  return n.getHours() * 60 + n.getMinutes();
+}
+function toMinutes(hm) {
+  const [h, m] = hm.split(":").map(Number);
+  return h * 60 + m;
+}
+function itemStatus(item, isToday) {
+  if (!isToday) return "upcoming";
+  const now = nowHM();
+  const start = toMinutes(item.time);
+  const end = item.endTime ? toMinutes(item.endTime) : start + 1;
+  if (now < start) return "upcoming";
+  if (now >= start && now < end) return "now";
+  return "done";
+}
+function findNextOrCurrent(dayId, isToday) {
+  const list = schedules[dayId] || [];
+  if (!isToday) return list[0] || null;
+  const now = nowHM();
+  for (const it of list) {
+    const start = toMinutes(it.time);
+    const end = it.endTime ? toMinutes(it.endTime) : start + 1;
+    if (now < end) return it;
+  }
+  return list[list.length - 1] || null;
+}
+
+function navigate(route) {
+  location.hash = route;
+}
+window.addEventListener("hashchange", render);
+window.addEventListener("DOMContentLoaded", () => {
+  if (!location.hash) location.hash = "#home";
+  render();
+  registerSW();
+  bindNav();
+});
+
+function bindNav() {
+  document.querySelectorAll(".nav-btn").forEach(btn => {
+    btn.addEventListener("click", () => navigate("#" + btn.dataset.nav));
+  });
+}
+function currentRoute() {
+  return (location.hash || "#home").replace("#", "");
+}
+function setActiveNav(route) {
+  const top = route.split("/")[0];
+  document.querySelectorAll(".nav-btn").forEach(b => {
+    b.classList.toggle("active", b.dataset.nav === top);
+  });
+}
+
+/* =========================================================================
+   RENDER
+   ========================================================================= */
+function render() {
+  const route = currentRoute();
+  setActiveNav(route);
+  const [main, sub] = route.split("/");
+  const app = document.getElementById("app");
+
+  let html = "";
+  switch (main) {
+    case "home": html = renderTopBar() + renderHome(); break;
+    case "today": html = renderTopBar("오늘의 일정") + renderToday(); break;
+    case "schedule": html = renderTopBar("여행 일정") + renderSchedule(); break;
+    case "notices": html = renderTopBar("공지사항") + renderNotices(); break;
+    case "mission":
+      if (sub === "museum") html = renderTopBar("국립중앙박물관") + renderMission("museum");
+      else if (sub === "gyeongbokgung") html = renderTopBar("경복궁") + renderMission("gyeongbokgung");
+      else html = renderTopBar("미션 선택") + renderMissionPicker();
+      break;
+    case "lotteworld": html = renderTopBar("롯데월드") + renderLotteWorld(); break;
+    case "photos": html = renderTopBar("수학여행 사진") + renderPhotos(); break;
+    case "safety": html = renderTopBar("안전 · 비상연락") + renderSafety(); break;
+    case "meetingpoints": html = renderTopBar("집결장소") + renderMeetingPoints(); break;
+    default: html = renderTopBar() + renderHome();
+  }
+  app.innerHTML = html;
+  bindViewEvents(main, sub);
+}
+
+function renderTopBar(subtitle) {
+  const dayId = todayDay();
+  const day = tripDays.find(d => d.id === dayId);
+  const real = isRealTripDay();
+  return `
+  <div class="topbar">
+    <div class="eyebrow">${SCHOOL_NAME} · 2026 행복다드림 수학여행</div>
+    <h1>${subtitle || "행복다드림 수학여행"}</h1>
+    <div class="day-chip"><span class="dot"></span>${day.label} · ${day.date}${real ? "" : " (미리보기)"}</div>
+    ${hasTripOverride() ? `<div style="margin-top:8px;font-size:11.5px;opacity:0.85;">✏️ 관리자 미리보기 데이터가 적용된 화면입니다</div>` : ""}
+  </div>`;
+}
+
+/* ---------- HOME ---------- */
+function renderHome() {
+  const dayId = todayDay();
+  const real = isRealTripDay();
+  const important = notices.filter(n => n.important)[0];
+  const next = findNextOrCurrent(dayId, real);
+  const points = meetingPoints[dayId] || [];
+  const curPoint = points[0];
+
+  return `
+  <div class="view">
+    ${important ? `
+    <div class="notice-banner">
+      <span class="tag">중요공지</span>
+      <div class="msg">${important.title}</div>
+    </div>` : ""}
+
+    <div class="section-title">📍 현재 집결장소</div>
+    <div class="card" style="display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-weight:800;font-size:15.5px;">${curPoint ? curPoint.name : "안내 예정"}</div>
+        <div style="font-size:12.5px;color:var(--text-soft);margin-top:2px;">${curPoint ? curPoint.time + " 집결 · " + curPoint.note : ""}</div>
+      </div>
+      <button class="btn-outline" style="width:auto;margin:0;padding:9px 14px;font-size:12.5px;" onclick="navigate('#meetingpoints')">전체 보기</button>
+    </div>
+
+    <div class="section-title">⏰ 다음 일정</div>
+    ${next ? `
+    <div class="next-card">
+      <div class="time">${next.time}</div>
+      <div class="info">
+        <div class="t">${next.title}</div>
+        <div class="p">${next.place}</div>
+      </div>
+    </div>` : `<div class="empty-state">등록된 일정이 없어요.</div>`}
+    <button class="btn-outline" onclick="navigate('#today')">오늘 일정 전체 보기</button>
+
+    <div class="section-title">🏆 현재 미션</div>
+    <div class="mission-cta">
+      <div>
+        <div class="t">국립중앙박물관 · 경복궁</div>
+        <div class="s">도착하면 미션을 시작하세요</div>
+      </div>
+      <button class="btn-go" onclick="navigate('#mission')">미션 보기</button>
+    </div>
+
+    <div class="section-title">🗺️ 전체 일정</div>
+    <div class="quick-grid">
+      <div class="quick-card" onclick="navigate('#schedule')">
+        <div class="label">여행 일정</div>
+        <div class="value">1~3일차 보기</div>
+      </div>
+      <div class="quick-card" onclick="navigate('#notices')">
+        <div class="label">공지사항</div>
+        <div class="value">${notices.length}개 공지</div>
+      </div>
+      <div class="quick-card" onclick="navigate('#lotteworld')">
+        <div class="label">🎡 롯데월드</div>
+        <div class="value">자유이용 안내</div>
+      </div>
+      <div class="quick-card" onclick="navigate('#photos')">
+        <div class="label">📸 사진</div>
+        <div class="value">수학여행 앨범</div>
+      </div>
+    </div>
+
+    <div class="section-title">🚨 안전 · 비상연락</div>
+    <button class="btn-primary" style="background:var(--coral);" onclick="navigate('#safety')">안전 · 비상연락 바로가기</button>
+
+    <div style="text-align:center;margin-top:24px;">
+      <a href="admin.html" style="font-size:12px;color:var(--text-faint);">교사용 관리자 화면</a>
+    </div>
+  </div>`;
+}
+
+/* ---------- TODAY ---------- */
+function renderToday() {
+  const dayId = todayDay();
+  const real = isRealTripDay();
+  const day = tripDays.find(d => d.id === dayId);
+  const list = schedules[dayId] || [];
+
+  const items = list.map(it => {
+    const st = itemStatus(it, real);
+    const badge = st === "now" ? `<span class="badge now">진행 중</span>` : st === "done" ? `<span class="badge done">완료</span>` : `<span class="badge next">예정</span>`;
+    return `
+    <div class="t-item ${st === "now" ? "now" : ""} ${st === "done" ? "done" : ""}">
+      <div class="row">
+        <div>
+          <div class="time">${it.time}${it.endTime ? " ~ " + it.endTime : ""}</div>
+          <div class="title">${it.title}</div>
+          <div class="meta">📍 ${it.place} ${it.transport && it.transport !== "-" ? "· 🚌 " + it.transport : ""}</div>
+          ${it.note ? `<div class="note">${it.note}</div>` : ""}
+        </div>
+        ${badge}
+      </div>
+    </div>`;
+  }).join("");
+
+  return `
+  <div class="view">
+    ${!real ? `<div class="offline-hint">오늘은 수학여행 기간이 아니에요. ${day.label} 일정을 미리 보여드려요.</div>` : ""}
+    <div class="section-title">📅 ${day.label} · ${day.title}</div>
+    <div class="card">
+      <div class="timeline">${items || `<div class="empty-state">등록된 일정이 없어요.</div>`}</div>
+    </div>
+    ${SCHEDULE_NOTE ? `<div class="offline-hint">${SCHEDULE_NOTE}</div>` : ""}
+  </div>`;
+}
+
+/* ---------- SCHEDULE (tabs) ---------- */
+function renderSchedule() {
+  if (!state.scheduleTab) state.scheduleTab = todayDay();
+  const tabs = tripDays.map(d => `
+    <button class="tab ${d.id === state.scheduleTab ? "active" : ""}" data-day="${d.id}">${d.label}</button>
+  `).join("");
+
+  const day = tripDays.find(d => d.id === state.scheduleTab);
+  const list = schedules[state.scheduleTab] || [];
+  const rows = list.map(it => `
+    <div class="t-item">
+      <div class="row">
+        <div>
+          <div class="time">${it.time}${it.endTime ? " ~ " + it.endTime : ""}</div>
+          <div class="title">${it.title}</div>
+          <div class="meta">📍 ${it.place} ${it.transport && it.transport !== "-" ? "· 🚌 " + it.transport : ""}</div>
+          ${it.note ? `<div class="note">${it.note}</div>` : ""}
+        </div>
+      </div>
+    </div>
+  `).join("");
+
+  return `
+  <div class="view">
+    <div class="tabs">${tabs}</div>
+    <div class="section-title">${day.title}</div>
+    <div class="card"><div class="timeline">${rows || `<div class="empty-state">등록된 일정이 없어요.</div>`}</div></div>
+    ${SCHEDULE_NOTE ? `<div class="offline-hint">${SCHEDULE_NOTE}</div>` : ""}
+  </div>`;
+}
+
+/* ---------- NOTICES ---------- */
+function renderNotices() {
+  const sorted = [...notices].sort((a, b) => (a.time < b.time ? 1 : -1));
+  const items = sorted.map(n => `
+    <div class="notice-item">
+      <div class="top">${n.important ? `<span class="imp-tag">중요</span>` : ""}<span class="title">${n.title}</span></div>
+      <div class="body">${n.body}</div>
+      <div class="time">${n.time}</div>
+    </div>
+  `).join("");
+  return `<div class="view"><div class="card">${items || `<div class="empty-state">등록된 공지가 없어요.</div>`}</div></div>`;
+}
+
+/* ---------- MISSION ---------- */
+function renderMissionPicker() {
+  return `
+  <div class="view">
+    <div class="section-title">🏆 미션을 선택하세요</div>
+    <div class="mission-picker">
+      <a class="mp-card" href="#mission/museum">
+        <div class="icon">🏛️</div>
+        <div><div class="t">국립중앙박물관 미션</div><div class="s">전시물을 찾아 문제를 해결해요</div></div>
+      </a>
+      <a class="mp-card" href="#mission/gyeongbokgung">
+        <div class="icon">🏯</div>
+        <div><div class="t">경복궁 미션</div><div class="s">조선 왕실의 흔적을 찾아봐요</div></div>
+      </a>
+    </div>
+  </div>`;
+}
+
+function renderMission(key) {
+  const conf = {
+    museum: {
+      emoji: "🏛️", name: "국립중앙박물관",
+      desc: "전시물을 직접 찾아보고 문제를 해결해 보세요!",
+      rules: ["조원과 함께 이동하세요", "전시품은 절대 만지지 마세요", "뛰어다니지 않기", "다른 관람객을 방해하지 않기"]
+    },
+    gyeongbokgung: {
+      emoji: "🏯", name: "경복궁",
+      desc: "조선 왕실의 흔적을 찾아 미션을 해결해 보세요!",
+      rules: ["조원과 함께 이동하세요", "문화재를 소중히 다뤄주세요", "뛰어다니지 않기", "정해진 관람 경로를 따라가기"]
+    }
+  }[key];
+
+  const url = missionLinks[key];
+  const rules = conf.rules.map(r => `<li>✅ ${r}</li>`).join("");
+
+  return `
+  <div class="view">
+    <div class="mission-hero">
+      <div class="emoji">${conf.emoji}</div>
+      <h2>${conf.name}</h2>
+      <p>${conf.desc}</p>
+    </div>
+    <div class="section-title">안내</div>
+    <div class="card"><ul class="rule-list">${rules}</ul></div>
+
+    ${url
+      ? `<button class="big-btn" onclick="window.open('${url}', '_blank', 'noopener')">🏆 ${conf.name} 미션 시작</button>
+         <div class="offline-hint">미션은 인터넷 연결이 필요합니다.</div>`
+      : `<div class="pending-note">🙌 미션 준비 중입니다.<br>도착 후 선생님 안내를 따라주세요.</div>`
+    }
+  </div>`;
+}
+
+/* ---------- LOTTE WORLD ---------- */
+function renderLotteWorld() {
+  const rules = lotteWorld.safetyRules.map(r => `<li>🎢 ${r}</li>`).join("");
+  return `
+  <div class="view">
+    <div class="meet-hero">
+      <div class="label">다음 집결시간</div>
+      <div class="time">${lotteWorld.meetingTime}</div>
+      <div class="place">📍 ${lotteWorld.meetingPlace}</div>
+    </div>
+
+    <div class="section-title">🎡 오늘의 일정</div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;margin-bottom:8px;">
+        <span>입장 시간</span><span>${lotteWorld.entryTime}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;">
+        <span>자유시간 종료</span><span>${lotteWorld.freeTimeEnd}</span>
+      </div>
+    </div>
+
+    <div class="section-title">🚨 이용 안전수칙</div>
+    <div class="card"><ul class="rule-list">${rules}</ul></div>
+
+    <div class="section-title">🧳 분실물 안내</div>
+    <div class="card">${lotteWorld.lostAndFound}</div>
+  </div>`;
+}
+
+/* ---------- PHOTOS ---------- */
+const swatches = ["#2B6CB8", "#3FA873", "#FFB100", "#E8543C", "#6B7280", "#1E4D80"];
+function renderPhotos() {
+  const sections = tripDays.map((d, i) => {
+    const list = photos[d.id] || [];
+    const tiles = list.map((p, idx) => {
+      const color = swatches[(i + idx) % swatches.length];
+      const bg = p.url ? `background-image:url('${p.url}');background-size:cover;background-position:center;` : `background:${color};`;
+      return `<div class="photo-tile" style="${bg}" data-place="${p.place}" data-url="${p.url || ""}">
+        <span class="cap">${p.place}</span>
+      </div>`;
+    }).join("");
+    return `
+    <div class="section-title">DAY ${d.id} · ${d.label}</div>
+    <div class="photo-grid">${tiles || `<div class="empty-state">아직 등록된 사진이 없어요.</div>`}</div>`;
+  }).join("");
+  return `<div class="view">${sections}</div>`;
+}
+
+/* ---------- SAFETY ---------- */
+function renderSafety() {
+  const contacts = emergencyContacts.map(c => `
+    <div class="contact-row">
+      <div>
+        <div class="label">${c.label}</div>
+        <div class="num">${c.phone}</div>
+      </div>
+      <a href="tel:${c.phone}"><button class="call-btn">📞 전화</button></a>
+    </div>
+  `).join("");
+  const rules = safetyRules.map(r => `<li>🙋 ${r}</li>`).join("");
+  const points = meetingPoints[todayDay()] || [];
+  const cur = points[0];
+
+  return `
+  <div class="view">
+    <button class="emergency-btn" id="emergencyBtn">🚨 긴급 상황 알리기</button>
+
+    <div class="section-title">👩‍🏫 인솔교사 · 비상연락</div>
+    <div class="card">${contacts}</div>
+
+    <div class="section-title">📍 현재 집결장소</div>
+    <div class="card">${cur ? `<b>${cur.name}</b> · ${cur.time} 집결<br><span style="color:var(--text-soft);font-size:13px;">${cur.note}</span>` : "안내 예정"}</div>
+
+    <div class="section-title">🏥 응급상황 행동요령</div>
+    <div class="card"><ul class="rule-list">${rules}</ul></div>
+  </div>
+
+  <div id="emergencyModal" class="modal-overlay" style="display:none;">
+    <div class="modal-box">
+      <div style="font-size:34px;">🚨</div>
+      <h3>긴급 상황이 맞나요?</h3>
+      <p>인솔교사에게 즉시 연결됩니다.<br>정말 긴급한 상황일 때만 눌러주세요.</p>
+      <div class="modal-actions">
+        <button class="m-cancel" id="emergencyCancel">취소</button>
+        <a href="tel:${emergencyContacts[0] ? emergencyContacts[0].phone : ""}" style="flex:1;">
+          <button class="m-confirm" style="width:100%;">네, 전화 걸기</button>
+        </a>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ---------- MEETING POINTS ---------- */
+function renderMeetingPoints() {
+  const sections = tripDays.map(d => {
+    const list = meetingPoints[d.id] || [];
+    const items = list.map(p => `
+      <div class="meet-item">
+        <div class="top">
+          <span class="name">📍 ${p.name}</span>
+          <span class="time">⏰ ${p.time}</span>
+        </div>
+        ${p.note ? `<div class="note">${p.note}</div>` : ""}
+        ${p.mapUrl ? `<a class="map-btn" href="${p.mapUrl}" target="_blank" rel="noopener">🗺️ 지도 열기</a>` : `<span class="map-btn" style="opacity:0.5;">🗺️ 지도 준비 중</span>`}
+      </div>
+    `).join("");
+    return `<div class="section-title">${d.label}</div>${items}`;
+  }).join("");
+  return `<div class="view">${sections}</div>`;
+}
+
+/* =========================================================================
+   VIEW EVENT BINDINGS
+   ========================================================================= */
+function bindViewEvents(main, sub) {
+  if (main === "schedule") {
+    document.querySelectorAll(".tab").forEach(t => {
+      t.addEventListener("click", () => {
+        state.scheduleTab = Number(t.dataset.day);
+        render();
+      });
+    });
+  }
+  if (main === "photos") {
+    document.querySelectorAll(".photo-tile").forEach(tile => {
+      tile.addEventListener("click", () => openPhotoModal(tile.dataset.place, tile.dataset.url));
+    });
+  }
+  if (main === "safety") {
+    const btn = document.getElementById("emergencyBtn");
+    const modal = document.getElementById("emergencyModal");
+    const cancel = document.getElementById("emergencyCancel");
+    if (btn && modal) {
+      btn.addEventListener("click", () => modal.style.display = "flex");
+      cancel.addEventListener("click", () => modal.style.display = "none");
+      modal.addEventListener("click", (e) => { if (e.target === modal) modal.style.display = "none"; });
+    }
+  }
+}
+
+function openPhotoModal(place, url) {
+  const overlay = document.createElement("div");
+  overlay.className = "modal-overlay";
+  overlay.innerHTML = `
+    <div class="modal-box photo-view">
+      <div class="ph-big" style="${url ? `background-image:url('${url}');background-size:cover;background-position:center;` : `background:var(--blue-pale);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text-soft);`}">
+        ${url ? "" : "사진 준비 중이에요"}
+      </div>
+      <h3>${place}</h3>
+      <button class="m-close">닫기</button>
+    </div>`;
+  document.body.appendChild(overlay);
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) overlay.remove(); });
+  overlay.querySelector(".m-close").addEventListener("click", () => overlay.remove());
+}
+
+/* =========================================================================
+   SERVICE WORKER (PWA)
+   ========================================================================= */
+function registerSW() {
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  }
+}
+</script>
+</body>
+</html>
